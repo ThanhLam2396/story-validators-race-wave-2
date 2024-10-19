@@ -31,8 +31,8 @@ Before starting, ensure you have:
 
 ### A. Download and Install Story-Exporter
 
-1.  **Clone the Story-exporter repository** :
-    `bash git clone https://github.com/ThanhLam2396/story-validators-race-wave-2/story-exporter.git`
+1.  **Get Story-exporter file** :
+    `curl -o story-exporter.py https://raw.githubusercontent.com/ThanhLam2396/story-validators-race-wave-2/main/story-exporter.py`
 2.  **Install dependencies**:
     ```
     sudo apt update && sudo apt install -y python3 python3-pip
