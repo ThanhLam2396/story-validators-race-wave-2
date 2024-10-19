@@ -32,6 +32,7 @@ This script automates the installation, configuration, and management of the Sto
 4. Run the script:
 
 	`./install_story.sh`
+<img width="1265" alt="main" src="https://github.com/user-attachments/assets/9d5a5018-7db7-4e5a-bcd8-9407809a861f">
 
 ----------
 
