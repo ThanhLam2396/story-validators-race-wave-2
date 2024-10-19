@@ -47,7 +47,7 @@ Pruned snapshots, on the other hand, **trim unnecessary historical data** while 
     📸 [Pruned Snapshot](https://services.tienthuattoan.com/testnet/story/snapshot)
     
 -   **Archive Snapshot:** For complete blockchain history and deeper analysis or validation.  
-    ✂️ [Archive Snapshot](https://services.tienthuattoan.com/testnet/story/snapshot-archive)
+    ⚗️ [Archive Snapshot](https://services.tienthuattoan.com/testnet/story/snapshot-archive)
     
 
 ----------
