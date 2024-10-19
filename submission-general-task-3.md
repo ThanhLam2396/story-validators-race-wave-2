@@ -1,394 +1,375 @@
+# **Documentation: Setting up the Validator Monitoring Dashboard with Grafana, Prometheus, and Story Exporter**
 
-# **Story Validator Node Setup Script - Documentation**
 
-## **I. Overview**
 
-This script automates the installation, configuration, and management of the Story Validator Node, simplifying operations by handling dependencies, binaries, system services, wallets, and syncing tasks. It provides a menu-driven interface that allows users to perform actions such as checking logs, managing node synchronization, and updating configurations.
+## **I. Overview: Why this Dashboard Matters for Validator Operations**
 
+The validator monitoring dashboard is a critical tool for operators to ensure their **Story node validator** is performing optimally. It offers real-time insights and metrics, including **system performance** (CPU, memory, disk, and network), **block production and consensus participation** from Tendermint-based metrics, and **custom Story metrics** gathered via Story-exporter. This dashboard helps with:
+
+-   **Tracking validator uptime** and detecting missed blocks.
+-   **Monitoring system health** through Node Exporter.
+-   **Alerting on network performance issues** and Tendermint consensus health.
+-   **Visualizing critical metrics** for validators with easy-to-understand graphs and alerts.
+
+This guide walks you through **setting up all necessary components**, including **Story-exporter**, **enabling Prometheus metrics for Tendermint nodes**, **installing Node Exporter**, and **integrating everything in Prometheus**. Finally, it shows you how to **import our custom Grafana dashboard** for full monitoring capabilities.
+
+*****
+### Access the Live Grafana Dashboard
+
+Click the link below to experience the live version of our custom Grafana dashboard and explore the monitoring features in real-time:
+
+➡️ **[Live Grafana Dashboard](https://monitoring.tienthuattoan.com/public-dashboards/e9dd9ccd9efa41cf9817e9b716737a46?orgId=1&refresh=5s)**
+
+## **II. Prerequisites**
+Before starting, ensure you have:
+
+1.  **Root access** to the machine.
+2.  **Story node validator** running.
+3.  **Access to the internet** to install required packages.
+4.  **Prometheus Alertmanager and Grafana binaries** installed.
+
+## **III. Install and Configure **
+
+### A. Download and Install Story-Exporter
+
+1.  **Clone the Story-exporter repository** :
+    ```
+    bash git clone https://github.com/ThanhLam2396/story-validators-race-wave-2/story-exporter.git
+    cd story-exporter
+2.  **Install dependencies**:
+    ```
+    sudo apt update && sudo apt install -y python3 python3-pip
+    pip3 install -r requirements.txt
+3.  Create a **systemd service file**:
+	`sudo nano /etc/systemd/system/story-exporter.service`
+   Add the following:
+	```
+	[Unit]
+	Description=Story Exporter Service
+    After=network.target
+	
+	[Service]
+	User=story
+	WorkingDirectory=/path/to/story-exporter
+	ExecStart=/usr/bin/python3 /path/to/story-exporter/exporter.py
+	Restart=always
+
+	[Install]
+	WantedBy=multi-user.target`
+    
+4.  **Create a new user** and set permissions:
+    ```
+    sudo useradd --no-create-home --shell /bin/false story
+    sudo chown -R story:story /path/to/story-exporter
+  
+ 5.  **`.env` Configuration for Story Exporter**
+
+		To properly configure your **Story Validator setup**, create a `.env` file using the command below:
+	`vim .env` 
+
+		Add the following variables:
+		```
+		NODE_OPERATOR=storyvaloper1ymsmqlx54g33msau9x98my03p9hd36djvkylqd
+		RPC_ENDPOINT=https://story-testnet.rpc.kjnodes.com
+		API_BASE_URL=https://api.testnet.storyscan.app
+##### Explanation of Each Environment Variable:
+```
+		A.  ***`NODE_OPERATOR`***
+		    -   **Purpose**: Identifies the unique operator address of the validator node you are managing.
+		    -   **Example**: `storyvaloper1ymsmqlx54g33msau9x98my03p9hd36djvkylqd`
+		    -   **Details**: This address belongs to your specific validator on the Story blockchain. It is crucial for tracking validator performance, missed blocks, and uptime. Make sure to replace it with your **validator's address**.
+		B.  ***`RPC_ENDPOINT`***
+		    -   **Purpose**: Connects the validator node to the **remote RPC endpoint** to gather blockchain data.
+		    -   **Example**: `https://story-testnet-rpc.tienthuattoan.com`
+		    -   **Details**: RPC (Remote Procedure Call) endpoints provide real-time blockchain information such as block height, transactions, and consensus participation. The RPC URL here connects your validator to the **Story testnet** for accurate metrics collection. Replace it with your relevant RPC endpoint if using a different environment (like mainnet).
+		C.  ***`API_BASE_URL`*** 
+		    -   **Purpose**: Points to the **block explorer’s API** to retrieve additional validator data.
+		    -   **Example**: `https://api.testnet.storyscan.app`
+		    -   **Details**: The API base URL allows your monitoring system to pull insights from **StoryScan**, the official block explorer for the Story network. It provides enhanced data, including validator ranking, uptime history, and performance statistics.
+```
+6.  **Enable and start Story-exporter**:
+    ```
+    sudo systemctl daemon-reload
+    sudo systemctl enable story-exporter
+    sudo systemctl start story-exporter` 
+7.  **Test the Story-exporter endpoint**:
+    `curl http://localhost:8888/metrics`
+
+
+### B. Download and Install Node Exporter
+
+1.  Download the latest Node Exporter:
+    ```
+	curl -LO https://github.com/prometheus/node_exporter/releases/download/v1.6.1/node_exporter-1.6.1.linux-amd64.tar.gz
+    tar -xvzf node_exporter-1.6.1.linux-amd64.tar.gz
+    sudo mv node_exporter-1.6.1.linux-amd64/node_exporter /usr/local/bin/` 
+2.  Create a **systemd service file**:
+    `sudo nano /etc/systemd/system/node-exporter.service` 
+    
+    Add the following content:
+    ```    
+	[Unit]
+    Description=Node Exporter
+    Wants=network-online.target
+    After=network-online.target
+    
+	[Service]
+	User=node_exporter
+	ExecStart=/usr/local/bin/node_exporter
+	Restart=on-failure
+	    
+	[Install]
+	WantedBy=default.target
+3.  Create the **Node Exporter user**:
+    `sudo useradd --no-create-home --shell /bin/false node_exporter` 
+    
+4.  **Enable and start the service**:
+    ```
+    sudo systemctl daemon-reload
+    sudo systemctl enable node-exporter
+    sudo systemctl start node-exporter` 
+5.  **Verify Node Exporter is running**:
+    `curl http://localhost:9100/metrics`
+
+### C. Enable Prometheus Metrics on Story Node Validator
+
+1.  Open the **Tendermint configuration file**:
+    
+    `nano ~/.story/story/config/config.toml` 
+    
+2.  **Enable Prometheus metrics** in the `[instrumentation]` section:
+    ```
+    [instrumentation]
+     prometheus = true` 
+3.  **Restart the Story Node validator**:
+    `sudo systemctl restart story.service` 
+    
+4.  **Verify the metrics endpoint**:
+    `curl http://localhost:26660/metrics`
+
+### D. Configure Prometheus
+    
+1.  **Add Prometheus configuration**:
+    `sudo nano /etc/prometheus/prometheus.yml` 
+    
+    Add the following:
+	```
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
+    
+    scrape_configs:
+      - job_name: 'node-exporter'
+        static_configs:
+          - targets: ['localhost:9100']
+    
+      - job_name: 'story-exporter'
+        static_configs:
+          - targets: ['localhost:9600']
+    
+      - job_name: 'story-validator'
+        static_configs:
+          - targets: ['localhost:26660']
+2. **Restart Prometheus**:
+`sudo systemctl restart prometheus`
+
+### E. Verify Setup Exporter and Prometheus
+
+1.  **Check Prometheus Targets**
+    -   Open Prometheus UI at `http://localhost:9090` or `http://<Your Prometheus Server Ip>:port`
+    -   Navigate to **Status > Targets**.
+    -   Ensure all targets (Node Exporter, Story-exporter, Tendermint Validator) are **UP**.
 ----------
 
-## **II. System Requirements**
-
-1.  **OS:** Ubuntu-based distributions
-
-2.  **Privileges:** Root or sudo access
-
-3.  **Network Access:** Required to download dependencies, binaries, and snapshots.
-
-* * * * *
-
-## **III. Installation Guide**
-
-### **Step 1: Script Setup**
-
-1. Open a terminal.
-
-2. Download the script (save it as `install_story.sh`).
-
-3. Provide execution permission:
-
-	`chmod +x install_story.sh`
-
-4. Run the script:
-
-	`./install_story.sh`
-<img width="1265" alt="main" src="https://github.com/user-attachments/assets/9d5a5018-7db7-4e5a-bcd8-9407809a861f">
-
-----------
-
-**NOTE:** This section provides an in-depth look at each feature available in the Story Validator Node setup script. Every feature is explained with the following structure:
-
--  **Feature Name and Number:** Corresponding menu option from the script.
-
--  **Purpose:** Describes the importance of the feature and how it benefits the user.
-
--  **Usage:** Step-by-step instructions on how to use the feature based on the code logic.
-
-----------
-
-## ** Main Features and Usage**
-
-**1\. Install Story Node**
-
-#### **Purpose:**
-
-This feature is essential as it provides a **one-stop installation process** for the Story Validator Node. It handles everything: **dependency management, binary installation, and configuration**, ensuring your node is ready to run seamlessly in no time. This option simplifies what would otherwise be a complex multi-step process, making it accessible even to beginners.
-
-#### **Usage:**
-
-1. Select **"Install Story Node "** from the main menu.
-
-2. Follow these prompts:
-
-	- Enter a **validator name**.
-
-	- Choose whether to **change default ports**.
-
-	- If yes, enter new prefixes for:
-
-	- Proxy App Port (26658)
-
-	- RPC Port (26657)
-
-	- P2P Port (26656)
-
-3. The script will:
-
-	- Install dependencies and Go.
-
-	- Clone the Story and Geth binaries.
-
-	- Set up the **systemd services** for automatic management.
-
-	- Sync using the **latest snapshot**.
-
-* * * * *
-
-**2\. Check Story Logs**
-
-
-#### **Purpose:**
-
-This feature provides **real-time monitoring of the Story Node's logs**, which is essential for tracking your node's performance and diagnosing any issues quickly. By watching the logs, you can detect synchronization issues, service disruptions, or configuration errors as they occur.
-
-#### **Usage:**
-
-1. Select **"Check Story Logs"** from the menu.
-
-2. The logs will display in real-time on the screen.
-
-3. Use **Ctrl + C** to exit the logs view.
-
-* * * * *
-
-**3\. Check Geth Logs**
-
-
-#### **Purpose:**
-
-This feature enables you to **monitor the Geth client logs**, which is crucial if your node interacts with Ethereum-based networks. Geth logs help ensure that your node stays connected and synced with the blockchain.
-
-#### **Usage:**
-
-1. Select **"Check Geth Logs"** from the menu.
-
-2. The logs will display in real-time.
-
-3. Use **Ctrl + C** to stop viewing the logs.
-
-* * * * *
-
-**4\. Check Sync Status**
-
-
-#### **Purpose:**
-
-This option checks the **current sync status** of the node, including the local and network block heights. Staying synced with the blockchain ensures the node can validate transactions and participate in consensus correctly.
-
-#### **Usage:**
-
-1. Select **"Check Sync Status"** from the menu.
-
-2. The script will:
-
-- Fetch the **local and network heights**.
-
-- Calculate the **blocks remaining** and estimate the sync time.
-
-3. View the sync progress on-screen.
-
-* * * * *
-
-**5\. Check Sync Info**
-
-
-#### **Purpose:**
-
-This feature provides **detailed synchronization information**, offering a deeper look at the node's current sync state. It is useful for debugging and ensuring your node is aligned with the blockchain.
-
-#### **Usage:**
-
-1. Select **"Check Sync Info"** from the menu.
-
-2. The script will retrieve and display sync details using the RPC interface.
-
-* * * * *
-
-**6\. Check Validator Info**
-
-
-#### **Purpose:**
-
-This option displays critical information about your validator, including its **status, ID, and other relevant data**. This is essential for monitoring the health of your validator and ensuring it remains active in the network.
-
-#### **Usage:**
-
-1. Select **"Check Validator Info"** from the menu.
-
-2. The validator's status will be shown on-screen.
-
-* * * * *
-
-**7\. Synchronization via Snapshot**
-
-
-#### **Purpose:**
-
-This feature allows you to **synchronize the node using the latest snapshot**, significantly speeding up the sync process. Instead of syncing from scratch, snapshots provide a recent state of the blockchain.
-
-#### **Usage:**
-
-1. Select **"Synchronization via Snapshot"** from the menu.
-
-2. Confirm synchronization by selecting **"yes"** when prompted.
-
-3. The script will:
-
-- Stop the services.
-
-- Download and extract the latest snapshot.
-
-- Restart the services for the node to continue syncing from the snapshot.
-
-* * * * *
-
-**8\. Update Seed**
-
-#### **Purpose:**
-
-This feature updates the **seed node configuration**, helping the node connect to other peers more efficiently. Keeping seeds updated ensures stable connections within the network.
-
-#### **Usage:**
-
-1. Select **"Update New Seed"** from the menu.
-
-2. Enter the **new seed** in the format: `node_id@ip:port`.
-
-3. The configuration will be updated and verified.
-
-* * * * *
-
-**9\. Sync New Live-Peers**
-
-#### **Purpose:**
-
-This feature fetches **live peers** from the network and updates the configuration with their details. Maintaining an up-to-date list of peers enhances connectivity and synchronization.
-
-#### **Usage:**
-
-1. Select **"Sync New Live-Peers"** from the menu.
-
-2. The script will fetch live peers and update the **persistent_peers** field in the configuration.
-
-* * * * *
-
-**10\. Clear Persistent Peers**
-
-
-#### **Purpose:**
-
-This option clears all existing **persistent peers** from the configuration. Use this when you encounter connectivity issues or want to reset the peer list.
-
-#### **Usage:**
-
-1. Select **"Clear Persistent Peers"** from the menu.
-
-2. The script will remove the peer list from the configuration.
-
-* * * * *
-
-**11\. Check Story Version**
-
-
-#### **Purpose:**
-
-Displays the **current version of the Story Node and Geth**. This helps ensure you are using the latest version for compatibility and security.
-
-####**Usage:**
-
-1. Select **"Check Story Version"** from the menu.
-
-2. View the versions displayed on-screen.
-
-* * * * *
-
-**12\. Upgrade Story Version**
-
-
-#### **Purpose:**
-
-This option upgrades the Story binaries to the **latest version**, ensuring your node remains compatible with the network's latest updates.
-
-#### **Usage:**
-
-1. Select **"Upgrade Story Version"** from the menu.
-
-2. The script will download and install the latest binaries.
-
-* * * * *
-
-**13\. Create Wallet**
-
-
-#### **Purpose:**
-
-Creates a **new wallet** for your node and exports the private key. This wallet is essential for validator operations.
-
-#### **Usage:**
-
-1. Select **"Create Wallet"** from the menu.
-
-2. Enter the **wallet name** when prompted.
-
-3.  **Save the private key** securely when displayed.
-
-* * * * *
-
-**14\. Check Wallet Info**
-
-
-#### **Purpose:**
-
-Displays information about the wallet you have created, including essential details for managing your assets.
-
-#### **Usage:**
-
-1. Select **"Check Wallet Info"** from the menu.
-
-2. The wallet details will be shown on-screen.
-
-* * * * *
-
-**15\. Check Wallet Balance**
-
-
-#### **Purpose:**
-
-This option allows you to **check the wallet's balance** using an EVM address.
-
-#### **Usage:**
-
-1. Select **"Check Wallet Balance"** from the menu.
-
-2. Enter the **EVM address** when prompted.
-
-3. View the balance in ETH format.
-
-* * * * *
-
-**16\. Restart Story Node**
-
-
-#### **Purpose:**
-
-Restarts the **Story and Geth services**, useful after making configuration changes or encountering issues.
-
-#### **Usage:**
-
-1. Select **"Restart Story Node"** from the menu.
-
-2. The services will restart, and logs will be displayed.
-
-* * * * *
-
-**17\. Stop Story Node**
-
-#### **Purpose:**
-
-Stops the Story and Geth services when maintenance or updates are needed.
-
-#### **Usage:**
-
-1. Select **"Stop Story Node"** from the menu.
-
-2. The services will be stopped.
-
-* * * * *
-
-**18\. Delete Story Node**
-
-#### **Purpose:**
-
-This option **removes the node and all its data**, useful if you need to reconfigure or uninstall the node.
-
-#### **Usage:**
-
-1. Select **"Delete Story Node"** from the menu.
-
-2. Confirm deletion by typing **"yes"**.
-
-* * * * *
-
-**19\. Help**
-
-#### **Purpose:**
-
-Displays a **detailed help menu** with descriptions of all features, guiding users through the available options.
-
-#### **Usage:**
-
-1. Select **"Help"** from the menu.
-
-2. Browse the help content displayed on-screen.
-
-* * * * *
-
-**20\. Exit**
-
- **Purpose:**
-
-Exit the script safely.
-
- **Usage:**
-
-1. Select **"Exit"** from the menu.
-
-2. The script will close.
-
-* * * * *
-
-**Conclusion**
-
---------------
-
-The Story Validator Node script streamlines the entire process of managing a blockchain node. With automated installation, real-time monitoring, and syncing capabilities, it ensures that users can focus on operating their validator efficiently. This comprehensive documentation serves as a guide to harness the full potential of the script and maintain a healthy, functional node in the network.
+### F .Importing the `story-validator-dashboard.json` File into Grafana
+1. **Access Grafana**:
+
+-   Open your web browser and enter the Grafana URL.  
+    Example:
+    `http://<your-grafana-host>:3001` 
+ - Log in with your credentials.
+
+
+2.  **Prepare the JSON File**
+
+-   Ensure that you have the JSON dashboard file ready for import:  
+    [Download the `story-validator-dashboard.json` file](https://github.com/ThanhLam2396/story-validators-race-wave-2/blob/main/story-validator-dashboard.json).
+
+3.  **Importing the Dashboard**
+	3.1.  **Go to the  Dashboard Page:**
+	    -   On the right-hand menu, click on the **"+" (new)** icon.
+	    -   Select **"Import"** from the dropdown.
+   
+	3.2.  **Upload the JSON File:**
+		 -   On the **Import page**, you will see three options:
+	- **Enter Dashboard ID** from Grafana.com.
+	-   **Upload JSON file** from your computer.
+	-  **Paste JSON code** directly into the input field.
+    -   Choose **Upload JSON File** and select the `story-validator-dashboard.json` you downloaded.
+    
+	3.3.  **Select the Data Source:**
+    -   If prompted, select **Prometheus** as the data source you have.
+    -   If no data source is available, you can add one:
+        1.  Navigate to **Configuration > Data Sources**.
+        2.  Click **Add Data Source** and choose **Prometheus**.
+        3.  Set the **URL** to:
+            
+            `http://<prometheus-server>:9090` 
+            
+        4.  Save the data source.
+4.  **Complete the Import:**
+    
+    -   Click **Import** to finish.
+
+
+5.  **Verify the Dashboard**
+
+	-   Once the import is complete, you will see the new dashboard displayed on the screen.
+	-   You can access it anytime by navigating to **Dashboards > Manage** and searching for the imported dashboard.
+
+### G. Setting Up the Alerting System for Story Validator Monitoring
+
+In addition to configuring the Grafana dashboard, **we highly recommend setting up an alerting system** to monitor validator nodes and the underlying infrastructure. This system plays a crucial role in ensuring high availability and performance by tracking essential metrics and sending timely notifications.
+
+#### Guide to Configuring Alerts
+
+1.  **Configure Prometheus Alerting Rules:**
+    -   Create or modify the alert rules within Prometheus to track key metrics such as:
+        -   **CPU or memory consumption** that may impact performance.
+        -   **Validator node synchronization lag** to detect potential miss block, slow block, downtime....
+        -   **Node failures or service disruptions.**
+    -   This our rule (saved in `alerts-rules.yml`):
+        ```
+		  - alert: BlackboxSlowProbe
+		    expr: avg_over_time(probe_duration_seconds[1m]) > 1
+		    for: 1m
+		    labels:
+		      severity: warning
+		    annotations:
+		      summary: Blackbox slow probe (instance {{ $labels.instance }})
+		      description: "Blackbox probe took more than 1s to complete\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+		  - alert: BlackboxProbeHttpFailure
+		    expr: probe_http_status_code <= 199 OR probe_http_status_code >= 400
+		    for: 0m
+		    labels:
+		      severity: critical
+		    annotations:
+		      summary: Blackbox probe HTTP failure (instance {{ $labels.instance }})
+		      description: "HTTP status code is not 200-399\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+		  - alert: BlackboxSslCertificateWillExpireSoon
+		    expr: 0 <= round((last_over_time(probe_ssl_earliest_cert_expiry[10m]) - time()) / 86400, 0.1) < 3
+		    for: 0m
+		    labels:
+		      severity: critical
+		    annotations:
+		      summary: Blackbox SSL certificate will expire soon (instance {{ $labels.instance }})
+		      description: "SSL certificate expires in less than 3 days\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+		  - alert: BlackboxProbeSlowHttp
+		    expr: avg_over_time(probe_http_duration_seconds[1m]) > 1
+		    for: 1m
+		    labels:
+		      severity: warning
+		    annotations:
+		      summary: Blackbox probe slow HTTP (instance {{ $labels.instance }})
+		      description: "HTTP request took more than 1s\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+		  - alert: HighMissedBlocks
+		    expr: changes(cosmos_validator_watcher_solo_missed_blocks{chain_id="bartio-beacon-80084"}[1m]) > 0
+		    for: 1m
+		    labels:
+		      severity: critical
+		    annotations:
+		      summary: "High number of missed blocks detected"
+		      description: "Validator has missed more than 0 blocks in the last minute for chain Berachain Testnet V2"
+		"alert-rules.yaml" 242L, 10753B                                                                                                                    242,52        Bot
+		  - alert: BlackboxConfigurationReloadFailure
+		    expr: blackbox_exporter_config_last_reload_successful != 1
+		    for: 0m
+		    labels:
+		      severity: warning
+		    annotations:
+		      summary: Blackbox configuration reload failure (instance {{ $labels.instance }})
+		      description: "Blackbox configuration reload failure\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+		  - alert: BlackboxSlowProbe
+		    expr: avg_over_time(probe_duration_seconds[1m]) > 1
+		    for: 1m
+		    labels:
+		      severity: warning
+		    annotations:
+		      summary: Blackbox slow probe (instance {{ $labels.instance }})
+		      description: "Blackbox probe took more than 1s to complete\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+		  - alert: BlackboxProbeHttpFailure
+		    expr: probe_http_status_code <= 199 OR probe_http_status_code >= 400
+		    for: 0m
+		    labels:
+		      severity: critical
+		    annotations:
+		      summary: Blackbox probe HTTP failure (instance {{ $labels.instance }})
+		      description: "HTTP status code is not 200-399\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+		  - alert: BlackboxSslCertificateWillExpireSoon
+		    expr: 0 <= round((last_over_time(probe_ssl_earliest_cert_expiry[10m]) - time()) / 86400, 0.1) < 3
+		    for: 0m
+		    labels:
+		      severity: critical
+		    annotations:
+		      summary: Blackbox SSL certificate will expire soon (instance {{ $labels.instance }})
+		      description: "SSL certificate expires in less than 3 days\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+		  - alert: BlackboxProbeSlowHttp
+		    expr: avg_over_time(probe_http_duration_seconds[1m]) > 1
+		    for: 1m
+		    labels:
+		      severity: warning
+		    annotations:
+		      summary: Blackbox probe slow HTTP (instance {{ $labels.instance }})
+		      description: "HTTP request took more than 1s\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+		  - alert: HighMissedBlocks
+		    expr: changes(cosmos_validator_watcher_solo_missed_blocks{chain_id="iliad-0"}[1m]) > 0
+		    for: 1m
+
+    -   Ensure this file is added to the Prometheus configuration under `rule_files`.
+2.  **Integrate with Notification Channels:**
+    -   Prometheus supports various notification methods through **Alertmanager**, such as:
+        -   **Slack, Email, Webhooks**, or **PagerDuty**.
+    -   Configure **Alertmanager** (e.g., `alertmanager.yml`) to route alerts to the appropriate teams:
+        ```
+        receivers:
+		  - name: 'telegram-bot'
+		    telegram_configs:
+		    - bot_token: xxxxx: xxxxxxxxxxxxxx
+		      api_url: https://api.telegram.org  
+		      message: '{{ template "telegram.ttt.message" .}}'
+		      chat_id: -<>
+		      parse_mode: 'HTML'
+
+        
+3.  **Verify the Alert Configuration:**
+    
+    -   After configuring Prometheus and Alertmanager, **reload the services** to apply the changes.
+    -   Use Prometheus UI to **check the status of alerts**:
+        -   Navigate to **`Status > Rules`** on the Prometheus interface.
+        -   Verify if the rules are correctly loaded and active.
+5.  **Test the Alerting System:**
+    
+    -   Simulate a condition that triggers an alert (e.g., stress test a node to generate high CPU usage).
+    -   Confirm that Prometheus detects the condition and that the notification is sent via the configured channel.
+
+By implementing this **alerting system alongside the dashboard**, you ensure rapid responses to incidents, minimizing downtime and maintaining high system availability. The synergy between **Prometheus monitoring, Alertmanager notifications, and Grafana visualization** provides a comprehensive monitoring solution to meet operational needs efficiently.
+
+
+### Conclusion
+The **Story Validator Dashboard** developed by the DevOps team at **TTT Labs** offers a powerful and essential tool for monitoring validator nodes and system performance in real-time. Through seamless integration with Prometheus metrics and custom-built Story Exporters, the dashboard provides deep insights into system health, node activity, and resource usage. This enables validator operators to detect issues early, maintain high uptime, and ensure efficient resource management.
+
+The dashboard empowers users to:
+
+-   **Monitor Validator Performance:** Track key metrics like block production, latency, and node synchronization.
+-   **Optimize Resources:** Visualize CPU, memory, and disk usage with insights from Node Exporter.
+-   **Proactive Alerts:** Use Prometheus to detect anomalies and trigger alerts before problems escalate.
+-   **Ensure Compliance:** Stay aligned with performance benchmarks, improving the reliability and trustworthiness of the validator infrastructure.
+
+With its intuitive interface, easy installation, and customization capabilities, the Story Validator Dashboard becomes an invaluable part of any operator’s toolkit. By leveraging the expertise of the DevOps team at TTT Labs, this dashboard ensures continuous improvement, offering a robust monitoring solution for both current needs and future scaling challenges.
