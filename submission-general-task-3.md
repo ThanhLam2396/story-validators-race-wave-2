@@ -83,7 +83,7 @@ Before starting, ensure you have:
 		Add the following variables:
 		```
 		NODE_OPERATOR=storyvaloper1ymsmqlx54g33msau9x98my03p9hd36djvkylqd
-		RPC_ENDPOINT=https://story-testnet.rpc.kjnodes.com
+		RPC_ENDPOINT=https://story-testnet-rpc.tienthuattoan.com
 		API_BASE_URL=https://api.testnet.storyscan.app
 ##### Explanation of Each Environment Variable:
 ```
