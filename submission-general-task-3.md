@@ -2,7 +2,7 @@
 
 
 
-## I. Overview: Why this Dashboard Matters for Validator Operations**
+## I. Overview: Why this Dashboard Matters for Validator Operations
 
 The validator monitoring dashboard is a critical tool for operators to ensure their **Story node validator** is performing optimally. It offers real-time insights and metrics, including **system performance** (CPU, memory, disk, and network), **block production and consensus participation** from Tendermint-based metrics, and **custom Story metrics** gathered via Story-exporter. This dashboard helps with:
 
