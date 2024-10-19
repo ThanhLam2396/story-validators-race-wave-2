@@ -1,6 +1,6 @@
+![Story-validator](https://github.com/user-attachments/assets/deaacab6-a4e1-43d3-9ebd-2be8034f3835)
+
 # **Setting up the Validator Monitoring Dashboard with Grafana, Prometheus, and Story Exporter**
-
-
 
 ## I. Overview: Why this Dashboard Matters for Validator Operations
 
