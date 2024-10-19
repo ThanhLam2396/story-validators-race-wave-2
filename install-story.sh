@@ -177,7 +177,7 @@ check_sync_status() {
     local rpc_port=$(sed -n '/\[rpc\]/,/laddr/ { /laddr/ {s/.*://; s/".*//; p} }' ~/.story/story/config/config.toml)
     while true; do
         local_height=$(curl -s localhost:$rpc_port/status | jq -r '.result.sync_info.latest_block_height')
-        network_height=$(curl -s http://80.60.53.183:26657/status | jq -r '.result.sync_info.latest_block_height')
+        network_height=$(curl -s https://story-testnet-rpc.tienthuattoan.com/status | jq -r '.result.sync_info.latest_block_height')
         blocks_left=$((network_height - local_height))
         estimated_time=$(echo "$blocks_left * 2.80" | bc)
         hours=$(echo "$estimated_time / 3600" | bc)
@@ -403,7 +403,7 @@ help_menu() {
 menu() {
     PS3="Select an action: "
     options=(
-        "Install Story node" "Check Story logs" "Check Geth logs" "Check sync status" "Check sync info" "Check validator info" "Synchronization via snapshot" "Update new seed" "Sync new live-peers" "Clear persistent peers" "Check Story version" "Upgrade Story version" "Create wallet" "Check wallet info" "Check wallet balance" "Restart Story node" "Stop Story node" "Delete Story node" "Help" "Exit"
+        "Install Story node" "Check Story logs" "Check Geth logs" "Check sync status" "Check sync info" "Check validator info" "Synchronization via snapshot" "Update new seed" "Sync new live-peers" "Clear persistent peers" "Check Story version" "Upgrade Story version" "Create new wallet" "Check wallet info" "Check wallet balance" "Restart Story node" "Stop Story node" "Delete Story node" "Help" "Exit"
     )
 
     select opt in "${options[@]}"; do
