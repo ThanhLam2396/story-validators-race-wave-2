@@ -43,16 +43,32 @@ Before starting, ensure you have:
 	```
 	[Unit]
 	Description=Story Exporter Service
-    After=network.target
+	After=network.target
 	
 	[Service]
+	# User and Group to run the service
 	User=story
-	WorkingDirectory=/path/to/story-exporter
-	ExecStart=/usr/bin/python3 /path/to/story-exporter/exporter.py
+	Group=story
+	
+	# Directory where the script is located
+	WorkingDirectory=/opt
+	
+	# Command to execute the Python script
+	ExecStart=/usr/bin/python3 /opt/story-exporter/story-exporter.py
+	
+	# Restart policy: restart service on failure
 	Restart=always
-
+	RestartSec=5
+	
+	# Set environment variables from .env file
+	EnvironmentFile=/opt/story-exporter/.env
+	
+	# Standard output and error log
+	StandardOutput=journal
+	StandardError=journal
+	
 	[Install]
-	WantedBy=multi-user.target`
+	WantedBy=multi-user.targe`
     
 4.  **Create a new user** and set permissions:
     ```
