@@ -94,7 +94,9 @@ Before starting, ensure you have:
     sudo systemctl start story-exporter` 
 7.  **Test the Story-exporter endpoint**:
     `curl http://localhost:8888/metrics`
+![task02- Story-exporter](https://github.com/user-attachments/assets/5007895b-27a4-47a2-a521-1af40fb2072c)
 
+----------
 
 ### B. Download and Install Node Exporter
 
@@ -130,6 +132,9 @@ Before starting, ensure you have:
     sudo systemctl start node-exporter` 
 5.  **Verify Node Exporter is running**:
     `curl http://localhost:9100/metrics`
+![task02-Node-exporter](https://github.com/user-attachments/assets/37b0419b-121e-4f4f-a02c-cd5aae632a97)
+
+----------
 
 ### C. Enable Prometheus Metrics on Story Node Validator
 
@@ -146,7 +151,9 @@ Before starting, ensure you have:
     
 4.  **Verify the metrics endpoint**:
     `curl http://localhost:26660/metrics`
+![task02-story-tendermint](https://github.com/user-attachments/assets/3a270aea-6bd5-4444-bc33-ec48ccd7d40a)
 
+----------
 ### D. Configure Prometheus
     
 1.  **Add Prometheus configuration**:
@@ -179,6 +186,9 @@ Before starting, ensure you have:
     -   Open Prometheus UI at `http://localhost:9090` or `http://<Your Prometheus Server Ip>:port`
     -   Navigate to **Status > Targets**.
     -   Ensure all targets (Node Exporter, Story-exporter, Tendermint Validator) are **UP**.
+
+![task02-prometheus-validate](https://github.com/user-attachments/assets/a8fa1f6e-a5ae-4a27-8b3b-d06dcb1c63cf)
+
 ----------
 
 ### F .Importing the `story-validator-dashboard.json` File into Grafana
@@ -199,7 +209,8 @@ Before starting, ensure you have:
 	3.1.  **Go to the  Dashboard Page:**
 	    -   On the right-hand menu, click on the **"+" (new)** icon.
 	    -   Select **"Import"** from the dropdown.
-   
+   ![task02-grafana-imports](https://github.com/user-attachments/assets/e933616c-9ad4-46c5-bd77-32586e2e6361)
+
 	3.2.  **Upload the JSON File:**
 		 -   On the **Import page**, you will see three options:
 	- **Enter Dashboard ID** from Grafana.com.
@@ -226,6 +237,9 @@ Before starting, ensure you have:
 
 	-   Once the import is complete, you will see the new dashboard displayed on the screen.
 	-   You can access it anytime by navigating to **Dashboards > Manage** and searching for the imported dashboard.
+![task02-dashboard](https://github.com/user-attachments/assets/f308eaa8-409a-4044-9121-3a68cff12e97)
+
+----------
 
 ### G. Setting Up the Alerting System for Story Validator Monitoring
 
@@ -358,6 +372,9 @@ In addition to configuring the Grafana dashboard, **we highly recommend setting 
     
     -   Simulate a condition that triggers an alert (e.g., stress test a node to generate high CPU usage).
     -   Confirm that Prometheus detects the condition and that the notification is sent via the configured channel.
+![task02- Alerts02](https://github.com/user-attachments/assets/801056b0-d7ed-4b20-822d-f4f1c3298865)
+![task02 - Alerts01](https://github.com/user-attachments/assets/22b3fee6-fecf-4685-a241-fe5828983a9d)
+![task02-Alerts03](https://github.com/user-attachments/assets/257211c1-52c0-4882-8510-234a7b1f6cd1)
 
 By implementing this **alerting system alongside the dashboard**, you ensure rapid responses to incidents, minimizing downtime and maintaining high system availability. The synergy between **Prometheus monitoring, Alertmanager notifications, and Grafana visualization** provides a comprehensive monitoring solution to meet operational needs efficiently.
 
