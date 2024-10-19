@@ -1,4 +1,4 @@
-# **Documentation: Setting up the Validator Monitoring Dashboard with Grafana, Prometheus, and Story Exporter**
+# **Setting up the Validator Monitoring Dashboard with Grafana, Prometheus, and Story Exporter**
 
 
 
