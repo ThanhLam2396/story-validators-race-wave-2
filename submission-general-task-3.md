@@ -17,7 +17,7 @@ This guide walks you through **setting up all necessary components**, including 
 
 Click the link below to experience the live version of our custom Grafana dashboard and explore the monitoring features in real-time:
 
-🌿 **[Live Grafana Dashboard](https://monitoring.tienthuattoan.com/public-dashboards/e9dd9ccd9efa41cf9817e9b716737a46?orgId=1&refresh=5s)**
+🌿➡️ **[Live Grafana Dashboard](https://monitoring.tienthuattoan.com/public-dashboards/e9dd9ccd9efa41cf9817e9b716737a46?orgId=1&refresh=5s)**
 
 ## II. Prerequisites
 Before starting, ensure you have:
