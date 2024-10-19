@@ -36,7 +36,7 @@ Before starting, ensure you have:
 2.  **Install dependencies**:
     ```
     sudo apt update && sudo apt install -y python3 python3-pip
-    pip3 install -r requirements.txt
+    pip3 install prometheus_client requests python-dotenv
 3.  Create a **systemd service file**:
 	`sudo nano /etc/systemd/system/story-exporter.service`
    Add the following:
