@@ -20,7 +20,7 @@ Click the link below to experience the live version of our custom Grafana dashbo
 
 ➡️ **[Live Grafana Dashboard](https://monitoring.tienthuattoan.com/public-dashboards/e9dd9ccd9efa41cf9817e9b716737a46?orgId=1&refresh=5s)**
 
-## **II. Prerequisites**
+## **II. Prerequisites
 Before starting, ensure you have:
 
 1.  **Root access** to the machine.
@@ -28,7 +28,7 @@ Before starting, ensure you have:
 3.  **Access to the internet** to install required packages.
 4.  **Prometheus Alertmanager and Grafana binaries** installed.
 
-## **III. Install and Configure **
+## **III. Install and Configure
 
 ### A. Download and Install Story-Exporter
 
