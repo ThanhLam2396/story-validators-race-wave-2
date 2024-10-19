@@ -1,6 +1,6 @@
+![enter image description here](https://insights.tienthuattoan.com/assets/logo/TTT-COVER-TW.png)
 
 ## Task Completion Report: Validator Profile Update on Storyscan
-
 For the **Bonus Task 1**, we have successfully updated the validator profile for **TTT VN Validator** to align with the requirements outlined on the [Storyscan Explorer](https://testnet.storyscan.app/validators/storyvaloper1ymsmqlx54g33msau9x98my03p9hd36djvkylqd).
 
 ### Validator Information:
