@@ -32,7 +32,7 @@ Before starting, ensure you have:
 ### A. Download and Install Story-Exporter
 
 1.  **Get Story-exporter file** :
-    `curl -o story-exporter.py https://raw.githubusercontent.com/ThanhLam2396/story-validators-race-wave-2/main/story-exporter.py`
+    `curl -o story-exporter.py https://github.com/TTT-Labs/Story-Protocol-Tools/blob/main/story-exporter.py`
 2.  **Install dependencies**:
     ```
     sudo apt update && sudo apt install -y python3 python3-pip
@@ -220,7 +220,7 @@ Before starting, ensure you have:
 2.  **Prepare the JSON File**
 
 -   Ensure that you have the JSON dashboard file ready for import:  
-    [Download the `story-validator-dashboard.json` file](https://github.com/ThanhLam2396/story-validators-race-wave-2/blob/main/story-validator-dashboard.json).
+    [Download the `story-validator-dashboard.json` file](https://github.com/TTT-Labs/Story-Protocol-Tools/blob/main/story-validator-dashboard.json)
 
 3.  **Importing the Dashboard**
 	3.1.  **Go to the  Dashboard Page:**
