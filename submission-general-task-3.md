@@ -2,7 +2,7 @@
 
 
 
-## **I. Overview: Why this Dashboard Matters for Validator Operations**
+## I. Overview: Why this Dashboard Matters for Validator Operations**
 
 The validator monitoring dashboard is a critical tool for operators to ensure their **Story node validator** is performing optimally. It offers real-time insights and metrics, including **system performance** (CPU, memory, disk, and network), **block production and consensus participation** from Tendermint-based metrics, and **custom Story metrics** gathered via Story-exporter. This dashboard helps with:
 
@@ -19,7 +19,7 @@ Click the link below to experience the live version of our custom Grafana dashbo
 
 ➡️ **[Live Grafana Dashboard](https://monitoring.tienthuattoan.com/public-dashboards/e9dd9ccd9efa41cf9817e9b716737a46?orgId=1&refresh=5s)**
 
-## **II. Prerequisites
+## II. Prerequisites
 Before starting, ensure you have:
 
 1.  **Root access** to the machine.
@@ -27,7 +27,7 @@ Before starting, ensure you have:
 3.  **Access to the internet** to install required packages.
 4.  **Prometheus Alertmanager and Grafana binaries** installed.
 
-## **III. Install and Configure
+## III. Install and Configure
 
 ### A. Download and Install Story-Exporter
 
