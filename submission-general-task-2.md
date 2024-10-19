@@ -1,4 +1,4 @@
-![enter image description here](https://insights.tienthuattoan.com/assets/logo/TTT-COVER-TW.png)
+![Story-validator](https://github.com/user-attachments/assets/deaacab6-a4e1-43d3-9ebd-2be8034f3835)
 ## **TTT VN Archive & Pruned Snapshots**
 
 At **TTT Labs**, we prioritize ensuring that validators and operators have access to efficient, fast, and reliable snapshots. Our **Archive and Pruned Snapshots** service plays a critical role in enabling Story blockchain validators to **set up and maintain nodes** quickly, minimize downtime, and ensure smooth participation in the network.
