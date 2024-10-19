@@ -1,3 +1,4 @@
+![enter image description here](https://insights.tienthuattoan.com/assets/logo/TTT-COVER-TW.png)
 
 ## Task Completion Report: Validator Profile Update on Storyscan
 
