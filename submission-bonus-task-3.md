@@ -1,4 +1,6 @@
 
+![enter image description here](https://insights.tienthuattoan.com/assets/logo/TTT-COVER-TW.png)
+
 ## Task Completion Report: Video Review of the Story Project
 
 For **Bonus Task 3**, we successfully created video content highlighting the **Story Protocol** ecosystem, aligning with the project’s vision to foster decentralized creativity and seamless blockchain experiences. These videos, available through **Story Hub's official social media**, showcase detailed overviews of the ecosystem and illustrate the potential of Story Protocol for validators, developers, and creators.
