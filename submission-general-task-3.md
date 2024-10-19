@@ -133,7 +133,8 @@ Before starting, ensure you have:
     sudo systemctl start node-exporter` 
 5.  **Verify Node Exporter is running**:
     `curl http://localhost:9100/metrics`
-![task02-Node-exporter](https://github.com/user-attachments/assets/81bd7b6e-5077-40f0-b6fb-659f0696439e)
+![task02-Node-exporter](https://github.com/user-attachments/assets/80a5d30c-ea52-419a-8545-8c4ea79f4642)
+
 
 
 ----------
@@ -153,7 +154,8 @@ Before starting, ensure you have:
     
 4.  **Verify the metrics endpoint**:
     `curl http://localhost:26660/metrics`
-![task02-story-tendermint](https://github.com/user-attachments/assets/3a270aea-6bd5-4444-bc33-ec48ccd7d40a)
+![task02-story-tendermint](https://github.com/user-attachments/assets/917ab6bb-8dd5-4401-82a7-805231d42db0)
+
 
 ----------
 ### D. Configure Prometheus
