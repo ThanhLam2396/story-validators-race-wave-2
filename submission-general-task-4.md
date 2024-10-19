@@ -1,4 +1,4 @@
-![enter image description here](https://insights.tienthuattoan.com/assets/logo/TTT-COVER-TW.png)
+![Story-validator](https://github.com/user-attachments/assets/deaacab6-a4e1-43d3-9ebd-2be8034f3835)
 ## TTT VN Public Good Services Documentation
 
 At **TTT Labs**, we take immense pride in our mission to empower and support the **Story blockchain community**. Our goal is to provide validators, developers, and stakeholders with essential tools and services that enhance **network performance, stability, and decentralization**. These offerings reflect our commitment to maintaining high standards and ensuring that every validator has the resources necessary to thrive. Below is a detailed overview of the suite of services we offer.
