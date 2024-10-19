@@ -1,5 +1,6 @@
 
-# **Story Validator Node Setup Script - Documentation**
+# **Story![Story-validator](https://github.com/user-attachments/assets/deaacab6-a4e1-43d3-9ebd-2be8034f3835)
+ Validator Node Setup Script - Documentation**
 
 ## **I. Overview**
 
