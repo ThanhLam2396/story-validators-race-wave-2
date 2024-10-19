@@ -1,0 +1,25 @@
+
+## Task Completion Report: Validator Profile Update on Storyscan
+
+For the **Bonus Task 1**, we have successfully updated the validator profile for **TTT VN Validator** to align with the requirements outlined on the [Storyscan Explorer](https://testnet.storyscan.app/validators/storyvaloper1ymsmqlx54g33msau9x98my03p9hd36djvkylqd).
+
+### Validator Information:
+
+We ensured that all required fields were meticulously filled in, providing full transparency and clear contact information for enhanced credibility. Below are the details included in the profile:
+
+-   **Moniker**: TTT VN
+-   **Details**: Vietnam's largest community validator, offering validation services, educational resources, and market penetration in the Vietnamese crypto market.
+-   **Banner and Avatar**: https://tienthuattoan.com/assest/img/logo_01.png
+-   **Twitter/X URL**: https://x.com/ttt_lab
+-   **Github URL**: https://github.com/ttt-labs
+-   **Website URL**: https://tienthuattoan.com/
+-   **Identity (Keybase)**: E46A1AC121BEAD77
+-   **Contact Address**: hello@tienthuattoan.com
+
+Our enhanced validator profile is live and visible at:  
+🔗 **[TTT VN Validator](https://testnet.storyscan.app/validators/storyvaloper1ymsmqlx54g33msau9x98my03p9hd36djvkylqd)**
+Below is an image summarizing the details we have provided:
+
+
+### Why This Update Matters:
+Updating the profile with complete and detailed information ensures transparency, builds trust with delegators, and enhances our presence within the Story blockchain ecosystem. By filling in every field thoroughly, we demonstrate our commitment to the community and align with best practices for blockchain governance.
