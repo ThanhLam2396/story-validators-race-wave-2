@@ -236,8 +236,8 @@ This option clears all existing **persistent peers** from the configuration. Use
 1. Select **"Clear Persistent Peers"** from the menu.
 
 2. The script will remove the peer list from the configuration.
-
-* * * * *<img width="1158" alt="10" src="https://github.com/user-attachments/assets/24b74be4-af6e-4727-8829-6c92d2ba2c1e">
+<img width="1158" alt="10" src="https://github.com/user-attachments/assets/24b74be4-af6e-4727-8829-6c92d2ba2c1e">
+* * * * *
 
 
 **11\. Check Story Version**
@@ -252,9 +252,8 @@ Displays the **current version of the Story Node and Geth**. This helps ensure y
 1. Select **"Check Story Version"** from the menu.
 
 2. View the versions displayed on-screen.
-
-* * * * *
 <img width="1144" alt="11" src="https://github.com/user-attachments/assets/535f9a65-b4a6-4bf4-8a99-2ac427b4cf6d">
+* * * * *
 
 
 **12\. Upgrade Story Version**
