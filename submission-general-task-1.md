@@ -37,7 +37,7 @@ This script automates the installation, configuration, and management of the Sto
 
 ----------
 
-## ** Main Features and Usage**
+## **IV. Main Features and Usage**
 
 **1\. Install Story Node**
 
