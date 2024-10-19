@@ -90,9 +90,10 @@ This feature provides **real-time monitoring of the Story Node's logs**, which i
 2. The logs will display in real-time on the screen.
 
 3. Use **Ctrl + C** to exit the logs view.
+   
+<img width="1183" alt="2" src="https://github.com/user-attachments/assets/dc71fbab-2ae7-428a-839e-43c0f06f4563">
 
 * * * * *
-<img width="1183" alt="2" src="https://github.com/user-attachments/assets/dc71fbab-2ae7-428a-839e-43c0f06f4563">
 
 
 **3\. Check Geth Logs**
@@ -109,12 +110,11 @@ This feature enables you to **monitor the Geth client logs**, which is crucial i
 2. The logs will display in real-time.
 
 3. Use **Ctrl + C** to stop viewing the logs.
-
-* * * * *
 <img width="1433" alt="3" src="https://github.com/user-attachments/assets/ddb23d9e-38ec-4954-b6d8-cba540cc7d0d">
 
-**4\. Check Sync Status**
+* * * * *
 
+**4\. Check Sync Status**
 
 #### **Purpose:**
 
@@ -131,9 +131,9 @@ This option checks the **current sync status** of the node, including the local 
 - Calculate the **blocks remaining** and estimate the sync time.
 
 3. View the sync progress on-screen.
+<img width="1351" alt="4" src="https://github.com/user-attachments/assets/e3a5480f-2f2d-4595-bb6e-a54bac37cd8f">
 
 * * * * *
-<img width="1351" alt="4" src="https://github.com/user-attachments/assets/e3a5480f-2f2d-4595-bb6e-a54bac37cd8f">
 
 **5\. Check Sync Info**
 
@@ -147,9 +147,9 @@ This feature provides **detailed synchronization information**, offering a deepe
 1. Select **"Check Sync Info"** from the menu.
 
 2. The script will retrieve and display sync details using the RPC interface.
+<img width="1146" alt="5" src="https://github.com/user-attachments/assets/57f30ade-05ff-4834-bdea-1be0bb8dd92b">
 
 * * * * *
-<img width="1146" alt="5" src="https://github.com/user-attachments/assets/57f30ade-05ff-4834-bdea-1be0bb8dd92b">
 
 
 **6\. Check Validator Info**
@@ -164,9 +164,9 @@ This option displays critical information about your validator, including its **
 1. Select **"Check Validator Info"** from the menu.
 
 2. The validator's status will be shown on-screen.
+<img width="1147" alt="6" src="https://github.com/user-attachments/assets/9b1f6540-7257-4fad-855e-b2383285d48e">
 
 * * * * *
-<img width="1147" alt="6" src="https://github.com/user-attachments/assets/9b1f6540-7257-4fad-855e-b2383285d48e">
 
 **7\. Synchronization via Snapshot**
 
@@ -220,9 +220,9 @@ This feature fetches **live peers** from the network and updates the configurati
 1. Select **"Sync New Live-Peers"** from the menu.
 
 2. The script will fetch live peers and update the **persistent_peers** field in the configuration.
+<img width="1160" alt="9" src="https://github.com/user-attachments/assets/2278ce83-a76c-44a4-bf81-130e734cd2d7">
 
 * * * * *
-<img width="1160" alt="9" src="https://github.com/user-attachments/assets/2278ce83-a76c-44a4-bf81-130e734cd2d7">
 
 **10\. Clear Persistent Peers**
 
