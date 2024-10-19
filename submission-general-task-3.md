@@ -94,7 +94,8 @@ Before starting, ensure you have:
     sudo systemctl start story-exporter` 
 7.  **Test the Story-exporter endpoint**:
     `curl http://localhost:8888/metrics`
-![task02- Story-exporter](https://github.com/user-attachments/assets/5007895b-27a4-47a2-a521-1af40fb2072c)
+![task02- Story-exporter](https://github.com/user-attachments/assets/c2d4d6a0-c4a0-4ea0-a3d6-7d9b3b649639)
+
 
 ----------
 
@@ -132,7 +133,8 @@ Before starting, ensure you have:
     sudo systemctl start node-exporter` 
 5.  **Verify Node Exporter is running**:
     `curl http://localhost:9100/metrics`
-![task02-Node-exporter](https://github.com/user-attachments/assets/37b0419b-121e-4f4f-a02c-cd5aae632a97)
+![task02-Node-exporter](https://github.com/user-attachments/assets/81bd7b6e-5077-40f0-b6fb-659f0696439e)
+
 
 ----------
 
