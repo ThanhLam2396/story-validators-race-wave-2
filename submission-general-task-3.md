@@ -13,7 +13,6 @@ The validator monitoring dashboard is a critical tool for operators to ensure th
 
 This guide walks you through **setting up all necessary components**, including **Story-exporter**, **enabling Prometheus metrics for Tendermint nodes**, **installing Node Exporter**, and **integrating everything in Prometheus**. Finally, it shows you how to **import our custom Grafana dashboard** for full monitoring capabilities.
 
-*****
 ### Access the Live Grafana Dashboard
 
 Click the link below to experience the live version of our custom Grafana dashboard and explore the monitoring features in real-time:
