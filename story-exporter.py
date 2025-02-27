@@ -1,5 +1,3 @@
-story-exporter.py
-root@monitor-server:/opt/story-exporter# cat story-exporter.py
 from prometheus_client import start_http_server, Gauge, Summary, Info
 import requests
 import time
